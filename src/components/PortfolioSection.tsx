@@ -1,34 +1,21 @@
 import { useState } from "react";
-import portfolio1 from "@/assets/portfolio-1.jpg";
-import portfolio2 from "@/assets/portfolio-2.jpg";
-import portfolio3 from "@/assets/portfolio-3.jpg";
-import portfolio4 from "@/assets/portfolio-4.jpg";
-import portfolio5 from "@/assets/portfolio-5.jpg";
-import portfolio6 from "@/assets/portfolio-6.jpg";
-import portfolio7 from "@/assets/portfolio-7.jpg";
-import portfolio8 from "@/assets/portfolio-8.jpg";
+import { clientData } from "@/config/clientData";
 
 interface PortfolioImage {
   src: string;
-  alt: string;
   title: string;
   location: string;
-  size: "small" | "medium" | "large";
 }
-
-const portfolioImages: PortfolioImage[] = [
-  { src: portfolio1, alt: "Wedding rings detail", title: "The Promise", location: "Napa Valley", size: "medium" },
-  { src: portfolio2, alt: "Couple embrace in garden", title: "Garden Romance", location: "Tuscany", size: "large" },
-  { src: portfolio3, alt: "Luxury venue interior", title: "Grand Affair", location: "The Plaza, NYC", size: "large" },
-  { src: portfolio4, alt: "Bride portrait", title: "Radiant Bride", location: "Paris", size: "medium" },
-  { src: portfolio5, alt: "First dance moment", title: "First Dance", location: "Lake Como", size: "large" },
-  { src: portfolio6, alt: "Wedding bouquet", title: "Florals", location: "Provence", size: "small" },
-  { src: portfolio7, alt: "Outdoor ceremony", title: "The Vows", location: "Amalfi Coast", size: "large" },
-  { src: portfolio8, alt: "Table setting detail", title: "Details", location: "Martha's Vineyard", size: "small" },
-];
 
 const PortfolioSection = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
+  // Combine image URLs with portfolio item metadata
+  const portfolioImages: PortfolioImage[] = clientData.images.portfolio.map((src, index) => ({
+    src,
+    title: clientData.portfolioItems[index]?.title || `Image ${index + 1}`,
+    location: clientData.portfolioItems[index]?.location || "",
+  }));
 
   return (
     <section id="portfolio" className="section-padding bg-champagne">
@@ -57,7 +44,7 @@ const PortfolioSection = () => {
             onMouseLeave={() => setHoveredIndex(null)}
           >
             <div className="aspect-[3/4] overflow-hidden">
-              <img src={portfolioImages[0].src} alt={portfolioImages[0].alt} className="w-full h-full object-cover" />
+              <img src={portfolioImages[0]?.src} alt={portfolioImages[0]?.title} className="w-full h-full object-cover" />
             </div>
             <ImageOverlay image={portfolioImages[0]} isHovered={hoveredIndex === 0} />
           </div>
@@ -68,7 +55,7 @@ const PortfolioSection = () => {
             onMouseLeave={() => setHoveredIndex(null)}
           >
             <div className="aspect-[16/9] md:aspect-[2/1] overflow-hidden">
-              <img src={portfolioImages[1].src} alt={portfolioImages[1].alt} className="w-full h-full object-cover" />
+              <img src={portfolioImages[1]?.src} alt={portfolioImages[1]?.title} className="w-full h-full object-cover" />
             </div>
             <ImageOverlay image={portfolioImages[1]} isHovered={hoveredIndex === 1} />
           </div>
@@ -79,7 +66,7 @@ const PortfolioSection = () => {
             onMouseLeave={() => setHoveredIndex(null)}
           >
             <div className="aspect-[3/4] md:aspect-auto md:h-full overflow-hidden">
-              <img src={portfolioImages[3].src} alt={portfolioImages[3].alt} className="w-full h-full object-cover" />
+              <img src={portfolioImages[3]?.src} alt={portfolioImages[3]?.title} className="w-full h-full object-cover" />
             </div>
             <ImageOverlay image={portfolioImages[3]} isHovered={hoveredIndex === 3} />
           </div>
@@ -91,7 +78,7 @@ const PortfolioSection = () => {
             onMouseLeave={() => setHoveredIndex(null)}
           >
             <div className="aspect-square overflow-hidden">
-              <img src={portfolioImages[5].src} alt={portfolioImages[5].alt} className="w-full h-full object-cover" />
+              <img src={portfolioImages[5]?.src} alt={portfolioImages[5]?.title} className="w-full h-full object-cover" />
             </div>
             <ImageOverlay image={portfolioImages[5]} isHovered={hoveredIndex === 5} />
           </div>
@@ -102,7 +89,7 @@ const PortfolioSection = () => {
             onMouseLeave={() => setHoveredIndex(null)}
           >
             <div className="aspect-[16/9] md:aspect-[2/1] overflow-hidden">
-              <img src={portfolioImages[2].src} alt={portfolioImages[2].alt} className="w-full h-full object-cover" />
+              <img src={portfolioImages[2]?.src} alt={portfolioImages[2]?.title} className="w-full h-full object-cover" />
             </div>
             <ImageOverlay image={portfolioImages[2]} isHovered={hoveredIndex === 2} />
           </div>
@@ -114,7 +101,7 @@ const PortfolioSection = () => {
             onMouseLeave={() => setHoveredIndex(null)}
           >
             <div className="aspect-[16/9] md:aspect-[2/1] overflow-hidden">
-              <img src={portfolioImages[4].src} alt={portfolioImages[4].alt} className="w-full h-full object-cover" />
+              <img src={portfolioImages[4]?.src} alt={portfolioImages[4]?.title} className="w-full h-full object-cover" />
             </div>
             <ImageOverlay image={portfolioImages[4]} isHovered={hoveredIndex === 4} />
           </div>
@@ -125,7 +112,7 @@ const PortfolioSection = () => {
             onMouseLeave={() => setHoveredIndex(null)}
           >
             <div className="aspect-[4/3] overflow-hidden">
-              <img src={portfolioImages[6].src} alt={portfolioImages[6].alt} className="w-full h-full object-cover" />
+              <img src={portfolioImages[6]?.src} alt={portfolioImages[6]?.title} className="w-full h-full object-cover" />
             </div>
             <ImageOverlay image={portfolioImages[6]} isHovered={hoveredIndex === 6} />
           </div>
@@ -136,7 +123,7 @@ const PortfolioSection = () => {
             onMouseLeave={() => setHoveredIndex(null)}
           >
             <div className="aspect-[4/3] overflow-hidden">
-              <img src={portfolioImages[7].src} alt={portfolioImages[7].alt} className="w-full h-full object-cover" />
+              <img src={portfolioImages[7]?.src} alt={portfolioImages[7]?.title} className="w-full h-full object-cover" />
             </div>
             <ImageOverlay image={portfolioImages[7]} isHovered={hoveredIndex === 7} />
           </div>

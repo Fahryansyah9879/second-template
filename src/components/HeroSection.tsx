@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import heroImage from "@/assets/hero-wedding.jpg";
+import { clientData } from "@/config/clientData";
 
 const HeroSection = () => {
   const scrollToPortfolio = () => {
@@ -11,7 +11,7 @@ const HeroSection = () => {
       {/* Background Image */}
       <div className="absolute inset-0">
         <img
-          src={heroImage}
+          src={clientData.images.hero}
           alt="Romantic wedding moment at golden hour"
           className="w-full h-full object-cover"
         />
@@ -21,18 +21,18 @@ const HeroSection = () => {
       {/* Content */}
       <div className="relative z-10 text-center px-6 max-w-4xl mx-auto animate-fade-in-up">
         <p className="text-refined text-primary-foreground/80 mb-6 tracking-[0.3em]">
-          Fine Art Wedding Photography
+          {clientData.brand.tagline}
         </p>
         
         <h1 className="heading-display text-primary-foreground mb-6 leading-[1.1]">
-          Capturing Unforgettable
-          <span className="block italic font-normal mt-2">Moments</span>
+          {clientData.brand.heroHeadline}
+          <span className="block italic font-normal mt-2">{clientData.brand.heroHeadlineAccent}</span>
         </h1>
 
         <div className="divider-elegant bg-primary-foreground/40" />
 
         <p className="text-elegant text-primary-foreground/90 mb-10 max-w-xl mx-auto">
-          Timeless elegance, authentic emotion, and the artistry of your love story preserved forever.
+          {clientData.brand.heroSubtext}
         </p>
 
         <Button

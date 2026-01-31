@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { clientData } from "@/config/clientData";
 
 const CTASection = () => {
   return (
@@ -10,7 +11,7 @@ const CTASection = () => {
       <div className="container-narrow relative z-10">
         <div className="text-center max-w-2xl mx-auto animate-fade-in-up">
           <p className="text-refined text-primary-foreground/70 mb-4 tracking-[0.2em]">
-            Let's Create Something Beautiful
+            {clientData.cta.headline}
           </p>
           
           <h2 className="heading-section text-primary-foreground mb-6">
@@ -20,9 +21,7 @@ const CTASection = () => {
           <div className="w-12 h-px bg-primary-foreground/30 mx-auto mb-8" />
 
           <p className="text-elegant text-primary-foreground/80 mb-10 leading-relaxed">
-            Every love story deserves to be captured with artistry and intention. 
-            I'd love to hear about your wedding day and how we can create something 
-            truly extraordinary together.
+            {clientData.cta.subtext}
           </p>
 
           <Button
@@ -31,7 +30,7 @@ const CTASection = () => {
             asChild
           >
             <a href="#contact">
-              Inquire About Your Date
+              {clientData.cta.buttonText}
             </a>
           </Button>
         </div>
