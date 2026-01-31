@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { clientData } from "@/config/clientData";
 
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -44,7 +45,7 @@ const Navigation = () => {
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
           >
-            Eleanor <span className="italic font-normal">Rose</span>
+            {clientData.brand.name} <span className="italic font-normal">{clientData.brand.nameAccent}</span>
           </a>
 
           {/* Desktop Navigation */}

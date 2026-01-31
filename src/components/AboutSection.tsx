@@ -1,4 +1,4 @@
-import photographerPortrait from "@/assets/photographer-portrait.jpg";
+import { clientData } from "@/config/clientData";
 
 const AboutSection = () => {
   return (
@@ -9,7 +9,7 @@ const AboutSection = () => {
           <div className="relative animate-fade-in-up order-2 md:order-1">
             <div className="aspect-[3/4] overflow-hidden shadow-image">
               <img
-                src={photographerPortrait}
+                src={clientData.images.photographerPortrait}
                 alt="Portrait of the photographer"
                 className="w-full h-full object-cover"
               />
@@ -25,25 +25,19 @@ const AboutSection = () => {
             </p>
             
             <h2 className="heading-section text-foreground mb-6">
-              Eleanor <span className="italic font-normal">Rose</span>
+              {clientData.brand.name} <span className="italic font-normal">{clientData.brand.nameAccent}</span>
             </h2>
 
             <div className="w-12 h-px bg-taupe mb-8" />
 
-            <p className="text-elegant text-muted-foreground mb-6 leading-relaxed">
-              With over a decade of experience capturing love stories across the world's most 
-              breathtaking destinations, I believe that every wedding is a unique masterpiece 
-              waiting to be immortalized.
-            </p>
-
-            <p className="text-elegant text-muted-foreground mb-8 leading-relaxed">
-              My approach blends documentary authenticity with fine art aesthetics—creating 
-              images that feel both timeless and deeply personal. Your wedding day deserves 
-              nothing less than extraordinary.
-            </p>
+            {clientData.about.paragraphs.map((paragraph, index) => (
+              <p key={index} className="text-elegant text-muted-foreground mb-6 leading-relaxed">
+                {paragraph}
+              </p>
+            ))}
 
             <p className="font-heading text-lg italic text-forest">
-              "Your story, beautifully told."
+              "{clientData.brand.philosophyQuote}"
             </p>
           </div>
         </div>

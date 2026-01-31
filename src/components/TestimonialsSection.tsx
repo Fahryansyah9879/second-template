@@ -1,33 +1,12 @@
 import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-
-interface Testimonial {
-  quote: string;
-  couple: string;
-  location: string;
-}
-
-const testimonials: Testimonial[] = [
-  {
-    quote: "Eleanor captured our day with such grace and artistry. Every photograph feels like a page from a beautiful storybook. We couldn't be more grateful.",
-    couple: "Sarah & James",
-    location: "Lake Como, Italy"
-  },
-  {
-    quote: "The way she captured the light, the emotion, the tiny details we didn't even notice—it's absolutely magical. These photos are our most treasured possessions.",
-    couple: "Victoria & Alexander",
-    location: "The Plaza, New York"
-  },
-  {
-    quote: "Working with Eleanor was a dream. She made us feel so comfortable, and the results exceeded every expectation. Pure artistry.",
-    couple: "Charlotte & William",
-    location: "Château de Chantilly, France"
-  }
-];
+import { clientData } from "@/config/clientData";
 
 const TestimonialsSection = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
+
+  const testimonials = clientData.testimonials;
 
   const goToNext = () => {
     if (isAnimating) return;
