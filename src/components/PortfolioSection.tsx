@@ -1,149 +1,101 @@
-import { useState } from "react";
-import { clientData } from "@/config/clientData";
-
-interface PortfolioImage {
-  src: string;
-  title: string;
-  location: string;
-}
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { X } from 'lucide-react';
+import { clientData } from '@/config/clientData';
 
 const PortfolioSection = () => {
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [selectedImage, setSelectedImage] = useState<null | any>(null);
 
-  // Combine image URLs with portfolio item metadata
-  const portfolioImages: PortfolioImage[] = clientData.images.portfolio.map((src, index) => ({
-    src,
-    title: clientData.portfolioItems[index]?.title || `Image ${index + 1}`,
-    location: clientData.portfolioItems[index]?.location || "",
-  }));
+  // Mengambil 12 foto pertama
+  const allImages = clientData.images.portfolio
+    .slice(0, 12)
+    .map((src, index) => ({
+      src,
+      title: clientData.portfolioItems[index]?.title || `Moment ${index + 1}`,
+      location: clientData.portfolioItems[index]?.location || 'Gallery',
+    }));
+
+  /**
+   * Strategi Distribusi:
+   * Agar simetris, kita membagi 12 foto ke dalam 3 array (kolom).
+   * Tips: Jika ada foto yang sangat tinggi, letakkan di kolom yang memiliki banyak foto kotak (1:1).
+   */
+  const columns = [
+    allImages.filter((_, i) => i % 3 === 0), // Foto 1, 4, 7, 10
+    allImages.filter((_, i) => i % 3 === 1), // Foto 2, 5, 8, 11
+    allImages.filter((_, i) => i % 3 === 2), // Foto 3, 6, 9, 12
+  ];
 
   return (
-    <section id="portfolio" className="section-padding bg-champagne">
-      <div className="container-wide">
-        {/* Section Header */}
-        <div className="text-center mb-16 animate-fade-in-up">
-          <p className="text-refined text-muted-foreground mb-4 tracking-[0.2em]">
-            Featured Work
-          </p>
-          <h2 className="heading-section text-foreground mb-4">
-            Portfolio
+    <section id='portfolio' className='section-padding bg-[#FAF9F6]'>
+      <div className='container-wide'>
+        {/* Header */}
+        <div className='text-center mb-12'>
+          <h2 className='text-3xl md:text-4xl font-serif text-charcoal'>
+            Instagram Gallery
           </h2>
-          <div className="divider-elegant" />
-          <p className="text-elegant text-muted-foreground max-w-2xl mx-auto">
-            A curated selection of moments from weddings around the world, 
-            each telling its own beautiful story.
-          </p>
+          <div className='h-px w-16 bg-charcoal/20 mx-auto mt-4' />
         </div>
 
-        {/* Bento Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 stagger-children">
-          {/* Row 1 */}
-          <div 
-            className="col-span-1 row-span-1 image-hover-zoom relative group"
-            onMouseEnter={() => setHoveredIndex(0)}
-            onMouseLeave={() => setHoveredIndex(null)}
-          >
-            <div className="aspect-[3/4] overflow-hidden">
-              <img src={portfolioImages[0]?.src} alt={portfolioImages[0]?.title} className="w-full h-full object-cover" />
-            </div>
-            <ImageOverlay image={portfolioImages[0]} isHovered={hoveredIndex === 0} />
-          </div>
+        {/* Flexbox Masonry Wrapper */}
+        <div className='flex flex-col md:flex-row gap-[15px]'>
+          {columns.map((column, colIdx) => (
+            <div key={colIdx} className='flex-1 flex flex-col gap-[15px]'>
+              {column.map((img, imgIdx) => (
+                <motion.div
+                  key={imgIdx}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: (colIdx + imgIdx) * 0.1 }}
+                  className='relative group cursor-pointer overflow-hidden rounded-[12px] bg-white shadow-sm'
+                  onClick={() => setSelectedImage(img)}
+                >
+                  <img
+                    src={img.src}
+                    alt={img.title}
+                    className='w-full h-auto object-cover block transition-transform duration-700 group-hover:scale-105'
+                  />
 
-          <div 
-            className="col-span-2 row-span-1 image-hover-zoom relative group"
-            onMouseEnter={() => setHoveredIndex(1)}
-            onMouseLeave={() => setHoveredIndex(null)}
-          >
-            <div className="aspect-[16/9] md:aspect-[2/1] overflow-hidden">
-              <img src={portfolioImages[1]?.src} alt={portfolioImages[1]?.title} className="w-full h-full object-cover" />
+                  {/* Subtle Overlay */}
+                  <div className='absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300' />
+                </motion.div>
+              ))}
             </div>
-            <ImageOverlay image={portfolioImages[1]} isHovered={hoveredIndex === 1} />
-          </div>
-
-          <div 
-            className="col-span-1 row-span-2 image-hover-zoom relative group"
-            onMouseEnter={() => setHoveredIndex(3)}
-            onMouseLeave={() => setHoveredIndex(null)}
-          >
-            <div className="aspect-[3/4] md:aspect-auto md:h-full overflow-hidden">
-              <img src={portfolioImages[3]?.src} alt={portfolioImages[3]?.title} className="w-full h-full object-cover" />
-            </div>
-            <ImageOverlay image={portfolioImages[3]} isHovered={hoveredIndex === 3} />
-          </div>
-
-          {/* Row 2 */}
-          <div 
-            className="col-span-1 row-span-1 image-hover-zoom relative group"
-            onMouseEnter={() => setHoveredIndex(5)}
-            onMouseLeave={() => setHoveredIndex(null)}
-          >
-            <div className="aspect-square overflow-hidden">
-              <img src={portfolioImages[5]?.src} alt={portfolioImages[5]?.title} className="w-full h-full object-cover" />
-            </div>
-            <ImageOverlay image={portfolioImages[5]} isHovered={hoveredIndex === 5} />
-          </div>
-
-          <div 
-            className="col-span-2 row-span-1 image-hover-zoom relative group"
-            onMouseEnter={() => setHoveredIndex(2)}
-            onMouseLeave={() => setHoveredIndex(null)}
-          >
-            <div className="aspect-[16/9] md:aspect-[2/1] overflow-hidden">
-              <img src={portfolioImages[2]?.src} alt={portfolioImages[2]?.title} className="w-full h-full object-cover" />
-            </div>
-            <ImageOverlay image={portfolioImages[2]} isHovered={hoveredIndex === 2} />
-          </div>
-
-          {/* Row 3 */}
-          <div 
-            className="col-span-2 row-span-1 image-hover-zoom relative group"
-            onMouseEnter={() => setHoveredIndex(4)}
-            onMouseLeave={() => setHoveredIndex(null)}
-          >
-            <div className="aspect-[16/9] md:aspect-[2/1] overflow-hidden">
-              <img src={portfolioImages[4]?.src} alt={portfolioImages[4]?.title} className="w-full h-full object-cover" />
-            </div>
-            <ImageOverlay image={portfolioImages[4]} isHovered={hoveredIndex === 4} />
-          </div>
-
-          <div 
-            className="col-span-1 row-span-1 image-hover-zoom relative group"
-            onMouseEnter={() => setHoveredIndex(6)}
-            onMouseLeave={() => setHoveredIndex(null)}
-          >
-            <div className="aspect-[4/3] overflow-hidden">
-              <img src={portfolioImages[6]?.src} alt={portfolioImages[6]?.title} className="w-full h-full object-cover" />
-            </div>
-            <ImageOverlay image={portfolioImages[6]} isHovered={hoveredIndex === 6} />
-          </div>
-
-          <div 
-            className="col-span-1 row-span-1 image-hover-zoom relative group"
-            onMouseEnter={() => setHoveredIndex(7)}
-            onMouseLeave={() => setHoveredIndex(null)}
-          >
-            <div className="aspect-[4/3] overflow-hidden">
-              <img src={portfolioImages[7]?.src} alt={portfolioImages[7]?.title} className="w-full h-full object-cover" />
-            </div>
-            <ImageOverlay image={portfolioImages[7]} isHovered={hoveredIndex === 7} />
-          </div>
+          ))}
         </div>
       </div>
+
+      {/* Lightbox Modal */}
+      <AnimatePresence>
+        {selectedImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className='fixed inset-0 z-[100] flex items-center justify-center bg-white/95 backdrop-blur-sm p-4'
+            onClick={() => setSelectedImage(null)}
+          >
+            <button className='absolute top-6 right-6 text-charcoal'>
+              <X size={28} />
+            </button>
+            <motion.div
+              initial={{ scale: 0.9 }}
+              animate={{ scale: 1 }}
+              className='max-w-3xl w-full flex flex-col items-center'
+              onClick={(e) => e.stopPropagation()}
+            >
+              <img
+                src={selectedImage.src}
+                className='max-h-[80vh] w-auto rounded-lg shadow-2xl'
+              />
+              <p className='mt-4 font-serif text-xl'>{selectedImage.title}</p>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 };
-
-const ImageOverlay = ({ image, isHovered }: { image: PortfolioImage; isHovered: boolean }) => (
-  <div 
-    className={`absolute inset-0 bg-gradient-to-t from-charcoal/80 via-transparent to-transparent flex items-end p-4 md:p-6 transition-opacity duration-500 ${
-      isHovered ? "opacity-100" : "opacity-0"
-    }`}
-  >
-    <div className="text-primary-foreground">
-      <p className="font-heading text-lg md:text-xl mb-1">{image.title}</p>
-      <p className="text-xs tracking-[0.15em] uppercase text-primary-foreground/70">{image.location}</p>
-    </div>
-  </div>
-);
 
 export default PortfolioSection;

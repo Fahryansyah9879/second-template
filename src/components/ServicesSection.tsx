@@ -1,52 +1,84 @@
-import { Camera, Heart, Sparkles, BookOpen } from "lucide-react";
-import { clientData } from "@/config/clientData";
+import { Camera, Heart, Sparkles, BookOpen } from 'lucide-react';
+import { clientData } from '@/config/clientData';
+import { motion } from 'framer-motion';
 
-const iconMap = [
-  <Camera className="w-8 h-8" key="camera" />,
-  <Heart className="w-8 h-8" key="heart" />,
-  <Sparkles className="w-8 h-8" key="sparkles" />,
-  <BookOpen className="w-8 h-8" key="book" />,
-];
+const iconMap: Record<string, React.ReactNode> = {
+  ceremony: <Heart className='w-5 h-5 stroke-[1.2]' />,
+  session: <Camera className='w-5 h-5 stroke-[1.2]' />,
+  delivery: <Sparkles className='w-5 h-5 stroke-[1.2]' />,
+  heirloom: <BookOpen className='w-5 h-5 stroke-[1.2]' />,
+};
 
 const ServicesSection = () => {
-  const services = clientData.services;
+  // Jika clientData belum update, kita bisa definisikan di sini untuk amannya
+  const weddingServices = [
+    {
+      title: 'The Wedding Day',
+      description:
+        'Full day documentation capturing every raw emotion and fleeting moment from dawn till dusk.',
+      icon: 'ceremony',
+    },
+    {
+      title: 'Engagement Session',
+      description:
+        'A relaxed, intimate session before the big day to celebrate your unique chemistry.',
+      icon: 'session',
+    },
+    {
+      title: 'Heirloom Albums',
+      description:
+        'Custom-designed, handcrafted albums made to preserve your memories for generations.',
+      icon: 'heirloom',
+    },
+    {
+      title: 'Digital Curation',
+      description:
+        'Artistically edited high-resolution images delivered in a private, elegant online gallery.',
+      icon: 'delivery',
+    },
+  ];
 
   return (
-    <section className="section-padding bg-champagne">
-      <div className="container-wide">
-        {/* Section Header */}
-        <div className="text-center mb-16 animate-fade-in-up">
-          <p className="text-refined text-muted-foreground mb-4 tracking-[0.2em]">
-            What I Offer
+    <section id='services' className='section-padding bg-champagne'>
+      <div className='container-wide px-6'>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className='text-center mb-24'
+        >
+          <p className='text-[10px] text-muted-foreground mb-4 tracking-[0.4em] uppercase'>
+            The Experience
           </p>
-          <h2 className="heading-section text-foreground mb-4">
-            Services
+          <h2 className='font-heading text-4xl md:text-5xl text-foreground mb-6'>
+            Wedding <span className='italic font-light'>Services</span>
           </h2>
-          <div className="divider-elegant" />
-          <p className="text-elegant text-muted-foreground max-w-2xl mx-auto">
-            Bespoke photography experiences tailored to your unique vision and celebration.
-          </p>
-        </div>
+          <div className='w-10 h-px bg-taupe/40 mx-auto' />
+        </motion.div>
 
-        {/* Services Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6 stagger-children">
-          {services.map((service, index) => (
-            <div
+        <div className='grid md:grid-cols-2 lg:grid-cols-4 gap-px bg-taupe/20 border border-taupe/20'>
+          {weddingServices.map((service, index) => (
+            <motion.div
               key={index}
-              className="bg-background p-8 lg:p-10 text-center group hover:shadow-elevated transition-shadow duration-500"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              className='bg-champagne p-12 text-center group hover:bg-white transition-all duration-700'
             >
-              <div className="inline-flex items-center justify-center w-16 h-16 mb-6 text-forest border border-taupe group-hover:bg-forest group-hover:text-primary-foreground group-hover:border-forest transition-all duration-500">
-                {iconMap[index % iconMap.length]}
+              <div className='inline-flex items-center justify-center w-12 h-12 mb-10 text-forest border border-forest/10 rounded-full group-hover:scale-110 transition-transform duration-500'>
+                {iconMap[service.icon]}
               </div>
-              
-              <h3 className="heading-subsection text-foreground mb-4">
+
+              <h3 className='text-[13px] tracking-[0.2em] uppercase font-semibold text-foreground mb-5'>
                 {service.title}
               </h3>
-              
-              <p className="text-elegant text-muted-foreground">
+
+              <p className='text-[13px] leading-relaxed text-muted-foreground/80 font-light'>
                 {service.description}
               </p>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
